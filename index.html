@@ -4,87 +4,87 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Analogic Clock</title>
+		<style>
+			body {
+				margin: 0;
+				box-sizing: border-box;
+				display: flex;
+				min-height: 100dvh;
+				justify-content: center;
+				align-items: center;
+				background: black;
+				color: white;
+			}
+
+			.clock {
+				position: relative;
+				width: 300px;
+				height: 300px;
+				border: 1px solid white;
+				border-radius: 50%;
+			}
+
+			.center {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translateX(-50%) translateY(-50%);
+				width: 3%;
+				height: 3%;
+				border-radius: 50%;
+				background-color: white;
+			}
+
+			.tick-wrapper {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				transform: rotate(var(--angle));
+			}
+
+			.tick {
+				position: absolute;
+				top: 0;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 1%;
+				height: 8%;
+				background: white;
+			}
+
+			.hours_hand {
+				position: absolute;
+				bottom: 50%;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 2%;
+				height: 32%;
+				background: white;
+			}
+
+			.minutes_hand {
+				position: absolute;
+				bottom: 50%;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 2%;
+				height: 41%;
+				background: white;
+			}
+
+			.seconds_hand {
+				position: absolute;
+				bottom: 50%;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 1%;
+				height: 41.5%;
+				background: white;
+			}
+		</style>
 	</head>
-	<style>
-		body {
-			margin: 0;
-			box-sizing: border-box;
-			display: flex;
-			min-height: 100dvh;
-			justify-content: center;
-			align-items: center;
-			background: black;
-			color: white;
-		}
-
-		.clock {
-			position: relative;
-			width: 300px;
-			height: 300px;
-			border: 1px solid white;
-			border-radius: 50%;
-		}
-
-		.center {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translateX(-50%) translateY(-50%);
-			width: 3%;
-			height: 3%;
-			border-radius: 50%;
-			background-color: white;
-		}
-
-		.tick-wrapper {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			top: 0;
-			left: 0;
-			transform: rotate(var(--angle));
-		}
-
-		.tick {
-			position: absolute;
-			top: 0;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 1%;
-			height: 8%;
-			background: white;
-		}
-
-		.hours_hand {
-			position: absolute;
-			bottom: 50%;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 2%;
-			height: 32%;
-			background: white;
-		}
-
-		.minutes_hand {
-			position: absolute;
-			bottom: 50%;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 2%;
-			height: 41%;
-			background: white;
-		}
-
-		.seconds_hand {
-			position: absolute;
-			bottom: 50%;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 1%;
-			height: 41.5%;
-			background: white;
-		}
-	</style>
 	<body>
 		<div class="clock">
 			<div class="tick-wrapper" style="--angle: 0deg"><div class="tick"></div></div>
@@ -109,20 +109,23 @@
 			const minutesHand = document.getElementById("minutes_hand");
 			const secondsHand = document.getElementById("seconds_hand");
 
-			setInterval(() => {
+			const updateClock = () => {
 				const now = new Date();
 				const hours = now.getHours();
 				const minutes = now.getMinutes();
 				const seconds = now.getSeconds();
 
-				const hourDeg = `${(hours % 12) * 30}deg`;
-				const minDeg = `${(minutes * 36) / 6}deg`;
-				const secDeg = `${(seconds * 36) / 6}deg`;
+				const hourDeg = `${(hours % 12) * 30 + (minutes / 60) * 30}deg`;
+				const minDeg = `${minutes * 6}deg`;
+				const secDeg = `${seconds * 6}deg`;
 
 				hoursHand.style.setProperty("--angle", hourDeg);
 				minutesHand.style.setProperty("--angle", minDeg);
 				secondsHand.style.setProperty("--angle", secDeg);
-			}, 1000);
+			};
+
+			updateClock();
+			setInterval(updateClock, 1000);
 		</script>
 	</body>
 </html>
